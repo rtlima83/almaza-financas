@@ -40,6 +40,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+ROOT_URLCONF = 'core.urls'
+
 # Configuração de Banco de Dados Dinâmica (SQLite no local, Postgres na Nuvem)
 DATABASES = {
     'default': dj_database_url.config(
