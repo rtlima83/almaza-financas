@@ -26,24 +26,11 @@
             }
         }
     </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body class="bg-almaza-bg text-slate-800 min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white">
 
-    <!-- ================= TELA DE LOGIN (SEGURANÇA) ================= -->
+    <!-- ================= TELA DE LOGIN ================= -->
     <div id="login-screen" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-100 fade-in relative overflow-hidden">
             <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-500 via-amber-500 to-terracotta"></div>
@@ -56,13 +43,11 @@
                 <p class="text-sm text-slate-500 mt-1">Gestão Financeira & Fluxo de Caixa</p>
             </div>
 
-            <!-- Caixa de Dica para Acesso Inicial -->
             <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-6 text-xs text-amber-800 flex items-start gap-2.5">
                 <i data-lucide="info" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
                 <div>
-                    <span class="font-semibold block">Acesso Seguro da Família:</span>
-                    Digite a senha de acesso para desbloquear o painel. <br>
-                    <span class="text-slate-500">(Dica padrão de primeiro acesso: <strong class="text-slate-700">almaza2026</strong>)</span>
+                    <span class="font-semibold block">Acesso Seguro:</span>
+                    Digite suas credenciais de acesso para desbloquear o painel conectado à nuvem.
                 </div>
             </div>
 
@@ -71,10 +56,7 @@
                     <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Usuário</label>
                     <div class="relative">
                         <i data-lucide="user" class="w-5 h-5 text-slate-400 absolute left-3 top-2.5"></i>
-                        <select id="username" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-10 pr-4 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
-                            <option value="Rodrigo Lima">Rodrigo Lima (Proprietário)</option>
-                            <option value="Esposa / Sócia">Esposa / Sócia</option>
-                        </select>
+                        <input type="text" id="username" required placeholder="Digite seu usuário..." autocomplete="username" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-10 pr-4 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
                     </div>
                 </div>
 
@@ -88,7 +70,7 @@
                         </button>
                     </div>
                     <p id="login-error" class="text-xs text-red-500 font-medium mt-1.5 hidden flex items-center gap-1">
-                        <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> Senha incorreta. Tente novamente.
+                        <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> Credenciais incorretas ou falha de autenticação.
                     </p>
                 </div>
 
@@ -106,12 +88,12 @@
             </form>
 
             <div class="mt-6 pt-4 border-t border-slate-100 text-center text-xs text-slate-400">
-                Ambiente Criptografado & Local &bull; Almaza Esfiharia &copy; 2026
+                Ambiente Criptografado & Nuvem &bull; Almaza Esfiharia &copy; 2026
             </div>
         </div>
     </div>
 
-    <!-- ================= DASHBOARD PRINCIPAL (OCULTO ATÉ LOGIN) ================= -->
+    <!-- ================= DASHBOARD PRINCIPAL ================= -->
     <div id="main-dashboard" class="hidden flex-1 flex flex-col">
         
         <!-- CABEÇALHO / NAVBAR -->
@@ -128,16 +110,14 @@
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <!-- Seletor de Mês -->
                     <div class="hidden sm:flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 text-sm">
                         <i data-lucide="calendar" class="w-4 h-4 text-emerald-400"></i>
                         <span class="font-medium text-slate-200">Julho / 2026</span>
                     </div>
 
-                    <!-- Perfil Logado -->
                     <div class="flex items-center gap-3 pl-4 border-l border-slate-800">
                         <div class="text-right hidden md:block">
-                            <span id="logged-user-name" class="block text-xs font-semibold text-slate-200">Rodrigo Lima</span>
+                            <span id="logged-user-name" class="block text-xs font-semibold text-slate-200">Usuário Logado</span>
                             <span class="block text-[10px] text-emerald-400 flex items-center justify-end gap-1 font-medium">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Acesso Seguro
                             </span>
@@ -158,16 +138,11 @@
             
             <!-- ABAS DAS SEMANAS -->
             <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap gap-1.5 items-center justify-between">
-                <div class="flex flex-wrap gap-1.5" id="weeks-tab-container">
-                    <!-- Gerado pelo JS -->
-                </div>
+                <div class="flex flex-wrap gap-1.5" id="weeks-tab-container"></div>
                 <div class="flex items-center gap-2 px-2 py-1">
                     <button onclick="openModal()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5">
                         <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i>
                         Novo Vencimento
-                    </button>
-                    <button onclick="resetData()" title="Restaurar dados iniciais da planilha de Julho" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl transition">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
@@ -175,7 +150,6 @@
             <!-- GRID SUPERIOR: ENTRADA & MÉTRICAS -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
-                <!-- CARD DE ENTRADA DA SEMANA & DISTRIBUIÇÃO AUTOMÁTICA -->
                 <div class="lg:col-span-5 bg-white rounded-2xl p-6 shadow-sm border border-slate-200 relative overflow-hidden flex flex-col justify-between">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -mr-16 -mt-16 pointer-events-none"></div>
                     
@@ -209,10 +183,8 @@
                     </div>
                 </div>
 
-                <!-- CARDS DE MÉTRICAS RÁPIDAS -->
                 <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     
-                    <!-- Card Total Despesas -->
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total de Vencimentos</span>
@@ -224,7 +196,6 @@
                             <div id="metric-total-expenses" class="text-2xl font-bold text-slate-800">R$ 0,00</div>
                             <span id="metric-expenses-count" class="text-xs text-slate-400 block mt-0.5">0 contas cadastradas nesta semana</span>
                         </div>
-                        <!-- Barra de Progresso -->
                         <div class="mt-4 pt-3 border-t border-slate-100">
                             <div class="flex justify-between text-xs font-medium mb-1">
                                 <span class="text-slate-500">Progresso de Quitação</span>
@@ -236,7 +207,6 @@
                         </div>
                     </div>
 
-                    <!-- Card Total Pago -->
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Total Já Quitado</span>
@@ -254,7 +224,6 @@
                         </div>
                     </div>
 
-                    <!-- Card Saldo da Entrada -->
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 sm:col-span-2 flex items-center justify-between">
                         <div class="flex items-center gap-4">
                             <div id="balance-icon-container" class="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
@@ -287,7 +256,6 @@
                         <p class="text-xs text-slate-400 mt-0.5">Gerencie os pagamentos, marque baixas manuais ou acompanhe a distribuição automática.</p>
                     </div>
 
-                    <!-- Filtro por Categoria e Busca -->
                     <div class="flex items-center gap-2">
                         <div class="relative">
                             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
@@ -320,13 +288,10 @@
                                 <th class="py-3 px-4 text-center">Ações Rápidas</th>
                             </tr>
                         </thead>
-                        <tbody id="expenses-table-body" class="divide-y divide-slate-100 text-sm">
-                            <!-- Gerado pelo JS -->
-                        </tbody>
+                        <tbody id="expenses-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
                     </table>
                 </div>
 
-                <!-- Rodapé da tabela se vazio -->
                 <div id="table-empty-state" class="hidden p-8 text-center text-slate-400">
                     <i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2 opacity-40"></i>
                     <p class="text-sm font-medium">Nenhum vencimento encontrado para este filtro nesta semana.</p>
@@ -336,7 +301,10 @@
             <!-- RODAPÉ INFORMATIVO -->
             <footer class="text-center text-xs text-slate-400 pt-4 pb-8 border-t border-slate-200/60 flex flex-col sm:flex-row items-center justify-between gap-2">
                 <span>&copy; 2026 Almaza Esfiharia &bull; Sistema Exclusivo de Controle Financeiro</span>
-                <span class="flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3 text-emerald-500"></i> Dados salvos em segurança no navegador do usuário (LocalStorage)</span>
+                <span class="flex items-center gap-1">
+                    <i data-lucide="database" class="w-3 h-3 text-emerald-500"></i> 
+                    Dados sincronizados e salvos em segurança na nuvem (PostgreSQL)
+                </span>
             </footer>
 
         </main>
@@ -421,542 +389,7 @@
         <span id="toast-message">Operação realizada com sucesso!</span>
     </div>
 
-    <!-- ================= JAVASCRIPT LÓGICA DO APP ================= -->
-    <script>
-        // --- 1. DADOS INICIAIS DA PLANILHA DE JULHO (MOCK DATA) ---
-        const DEFAULT_DATA = [
-            // Semana 1 (29 a 05)
-            { id: 'w1_1', week: 1, name: 'tinta loja', day: 29, amount: 122.00, paid: 0, status: 'Pendente', category: 'Operacional', notes: '' },
-            { id: 'w1_2', week: 1, name: 'empréstimo', day: 3, amount: 153.00, paid: 0, status: 'Pendente', category: 'Empréstimos', notes: '' },
-            { id: 'w1_3', week: 1, name: 'GPS MARIA', day: 3, amount: 45.00, paid: 0, status: 'Pendente', category: 'Consumo', notes: '' },
-            { id: 'w1_4', week: 1, name: 'caminhão', day: 2, amount: 1522.00, paid: 0, status: 'Pendente', category: 'Operacional', notes: '' },
-            { id: 'w1_5', week: 1, name: 'pro labore', day: 5, amount: 1600.00, paid: 0, status: 'Pendente', category: 'Pessoal', notes: '' },
-
-            // Semana 2 (06 a 12)
-            { id: 'w2_1', week: 2, name: 'INTERNET', day: 10, amount: 111.90, paid: 0, status: 'Pendente', category: 'Consumo', notes: '' },
-            { id: 'w2_2', week: 2, name: 'CAIXA', day: 10, amount: 450.00, paid: 0, status: 'Pendente', category: 'Operacional', notes: '' },
-            { id: 'w2_3', week: 2, name: 'pro labore', day: 10, amount: 1800.00, paid: 0, status: 'Pendente', category: 'Pessoal', notes: '' },
-            { id: 'w2_4', week: 2, name: 'CARTÃO NU VE', day: 13, amount: 167.00, paid: 0, status: 'Pendente', category: 'Cartões', notes: '' },
-            { id: 'w2_5', week: 2, name: 'LUZ', day: 14, amount: 429.00, paid: 0, status: 'Pendente', category: 'Consumo', notes: '' },
-            { id: 'w2_6', week: 2, name: 'AGUA', day: 15, amount: 168.00, paid: 0, status: 'Pendente', category: 'Consumo', notes: 'em atraso junho' },
-            { id: 'w2_7', week: 2, name: 'empréstimo', day: 11, amount: 152.37, paid: 0, status: 'Pendente', category: 'Empréstimos', notes: '' },
-            { id: 'w2_8', week: 2, name: 'GPS Maria', day: 12, amount: 90.00, paid: 0, status: 'Pendente', category: 'Consumo', notes: '' },
-
-            // Semana 3 (13 a 19)
-            { id: 'w3_1', week: 3, name: 'pro labore', day: 12, amount: 1600.00, paid: 0, status: 'Pendente', category: 'Pessoal', notes: '' },
-            { id: 'w3_2', week: 3, name: 'CAIXA', day: 12, amount: 331.00, paid: 0, status: 'Pendente', category: 'Operacional', notes: '' },
-            { id: 'w3_3', week: 3, name: 'CAMINHÃO', day: 17, amount: 1000.00, paid: 0, status: 'Pendente', category: 'Operacional', notes: '' },
-            { id: 'w3_4', week: 3, name: 'MEI ve', day: 20, amount: 80.00, paid: 0, status: 'Pendente', category: 'Impostos', notes: '' },
-            { id: 'w3_5', week: 3, name: 'mei rodrigo', day: 20, amount: 80.00, paid: 0, status: 'Pendente', category: 'Impostos', notes: '' },
-            { id: 'w3_6', week: 3, name: 'empréstimo', day: 20, amount: 152.37, paid: 0, status: 'Pendente', category: 'Empréstimos', notes: 'quarto 20/5 são 12' },
-            { id: 'w3_7', week: 3, name: 'cartão no RO itens loja', day: 15, amount: 183.00, paid: 0, status: 'Pendente', category: 'Cartões', notes: '' },
-
-            // Semana 4 (20 a 26)
-            { id: 'w4_1', week: 4, name: 'aluguel', day: 25, amount: 1500.00, paid: 0, status: 'Pendente', category: 'Operacional', notes: '' },
-            { id: 'w4_2', week: 4, name: 'cartão mercado pago', day: 22, amount: 509.00, paid: 0, status: 'Pendente', category: 'Cartões', notes: '' },
-            { id: 'w4_3', week: 4, name: 'cartão tinta', day: 21, amount: 100.00, paid: 0, status: 'Pendente', category: 'Cartões', notes: '' },
-            { id: 'w4_4', week: 4, name: 'pro labore', day: 26, amount: 1600.00, paid: 0, status: 'Pendente', category: 'Pessoal', notes: '' },
-
-            // Semana 5 (27 a 02)
-            { id: 'w5_1', week: 5, name: 'empréstimo Rodrigo', day: 27, amount: 152.37, paid: 0, status: 'Pendente', category: 'Empréstimos', notes: 'vence dia 22' },
-            { id: 'w5_2', week: 5, name: 'empréstimo vê', day: 29, amount: 152.37, paid: 0, status: 'Pendente', category: 'Empréstimos', notes: 'vence dia 29' },
-            { id: 'w5_3', week: 5, name: 'GPS MARIA', day: 30, amount: 45.00, paid: 0, status: 'Pendente', category: 'Consumo', notes: '' }
-        ];
-
-        const WEEKS_LABEL = {
-            1: 'Semana 1: 29 a 05',
-            2: 'Semana 2: 06 a 12',
-            3: 'Semana 3: 13 a 19',
-            4: 'Semana 4: 20 a 26',
-            5: 'Semana 5: 27 a 02'
-        };
-
-        const CATEGORY_COLORS = {
-            'Consumo': 'bg-blue-100 text-blue-800 border-blue-200',
-            'Operacional': 'bg-slate-100 text-slate-800 border-slate-200',
-            'Pessoal': 'bg-purple-100 text-purple-800 border-purple-200',
-            'Empréstimos': 'bg-amber-100 text-amber-800 border-amber-200',
-            'Impostos': 'bg-red-100 text-red-800 border-red-200',
-            'Cartões': 'bg-teal-100 text-teal-800 border-teal-200'
-        };
-
-        // --- ESTADO GLOBAL DA APLICAÇÃO ---
-        let currentWeek = 1;
-        let expenses = [];
-        let revenues = { 1: '', 2: '', 3: '', 4: '', 5: '' };
-
-        // --- INICIALIZAÇÃO ---
-        document.addEventListener("DOMContentLoaded", () => {
-            lucide.createIcons();
-            checkLoginState();
-            loadFromStorage();
-            renderWeeksTabs();
-            renderExpenses();
-            updateMetrics();
-        });
-
-        // --- 2. GESTÃO DE LOGIN & SEGURANÇA ---
-        function checkLoginState() {
-            const loggedUser = localStorage.getItem('almaza_logged_user');
-            if (loggedUser) {
-                document.getElementById('logged-user-name').innerText = loggedUser;
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-dashboard').classList.remove('hidden');
-            }
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const pass = document.getElementById('password').value.trim();
-            const user = document.getElementById('username').value;
-            const error = document.getElementById('login-error');
-
-            // Senha padrão de primeiro acesso: almaza2026
-            if (pass === 'almaza2026' || pass === 'almaza') {
-                error.classList.add('hidden');
-                localStorage.setItem('almaza_logged_user', user);
-                document.getElementById('logged-user-name').innerText = user;
-                
-                // Animação de fechar login
-                document.getElementById('login-screen').classList.add('opacity-0', 'transition-opacity', 'duration-300');
-                setTimeout(() => {
-                    document.getElementById('login-screen').classList.add('hidden');
-                    document.getElementById('main-dashboard').classList.remove('hidden');
-                }, 300);
-                showToast('Bem-vindo(a) ao painel financeiro!');
-            } else {
-                error.classList.remove('hidden');
-            }
-        }
-
-        function handleLogout() {
-            if (confirm('Deseja realmente sair do sistema?')) {
-                localStorage.removeItem('almaza_logged_user');
-                location.reload();
-            }
-        }
-
-        function togglePassword() {
-            const passInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eye-icon');
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                eyeIcon.setAttribute('data-lucide', 'eye-off');
-            } else {
-                passInput.type = 'password';
-                eyeIcon.setAttribute('data-lucide', 'eye');
-            }
-            lucide.createIcons();
-        }
-
-        // --- 3. PERSISTÊNCIA NO LOCALSTORAGE ---
-        function loadFromStorage() {
-            const storedExpenses = localStorage.getItem('almaza_expenses_v1');
-            const storedRevenues = localStorage.getItem('almaza_revenues_v1');
-            
-            if (storedExpenses) {
-                expenses = JSON.parse(storedExpenses);
-            } else {
-                expenses = JSON.parse(JSON.stringify(DEFAULT_DATA));
-                saveToStorage();
-            }
-
-            if (storedRevenues) {
-                revenues = JSON.parse(storedRevenues);
-            }
-            document.getElementById('weekly-revenue-input').value = revenues[currentWeek] || '';
-        }
-
-        function saveToStorage() {
-            localStorage.setItem('almaza_expenses_v1', JSON.stringify(expenses));
-            localStorage.setItem('almaza_revenues_v1', JSON.stringify(revenues));
-        }
-
-        function resetData() {
-            if (confirm('Atenção: Isso irá restaurar todas as contas e pagamentos de Julho para o padrão inicial da planilha. Deseja continuar?')) {
-                expenses = JSON.parse(JSON.stringify(DEFAULT_DATA));
-                revenues = { 1: '', 2: '', 3: '', 4: '', 5: '' };
-                saveToStorage();
-                document.getElementById('weekly-revenue-input').value = '';
-                renderExpenses();
-                updateMetrics();
-                showToast('Dados restaurados com sucesso!');
-            }
-        }
-
-        // --- 4. RENDERIZAÇÃO DE ABAS DAS SEMANAS ---
-        function renderWeeksTabs() {
-            const container = document.getElementById('weeks-tab-container');
-            container.innerHTML = '';
-
-            for (let w = 1; w <= 5; w++) {
-                const btn = document.createElement('button');
-                const isActive = (w === currentWeek);
-                btn.className = `px-3.5 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 ${
-                    isActive 
-                    ? 'bg-slate-900 text-white shadow-md' 
-                    : 'text-slate-600 hover:bg-slate-100'
-                }`;
-                btn.innerHTML = `
-                    <i data-lucide="${isActive ? 'folder-open' : 'folder'}" class="w-3.5 h-3.5 ${isActive ? 'text-emerald-400' : 'text-slate-400'}"></i>
-                    ${WEEKS_LABEL[w]}
-                `;
-                btn.onclick = () => selectWeek(w);
-                container.appendChild(btn);
-            }
-            lucide.createIcons();
-        }
-
-        function selectWeek(weekNum) {
-            currentWeek = weekNum;
-            document.getElementById('current-week-badge').innerText = `Semana ${weekNum}`;
-            document.getElementById('weekly-revenue-input').value = revenues[currentWeek] || '';
-            renderWeeksTabs();
-            renderExpenses();
-            updateMetrics();
-        }
-
-        // --- 5. RENDERIZAÇÃO DA TABELA DE DESPESAS ---
-        function renderExpenses() {
-            const tbody = document.getElementById('expenses-table-body');
-            const emptyState = document.getElementById('table-empty-state');
-            const search = document.getElementById('search-input').value.toLowerCase();
-            const categoryFilter = document.getElementById('filter-category').value;
-
-            tbody.innerHTML = '';
-
-            const filtered = expenses.filter(item => {
-                const matchWeek = item.week === currentWeek;
-                const matchSearch = item.name.toLowerCase().includes(search) || (item.notes && item.notes.toLowerCase().includes(search));
-                const matchCategory = categoryFilter === 'ALL' || item.category === categoryFilter;
-                return matchWeek && matchSearch && matchCategory;
-            });
-
-            if (filtered.length === 0) {
-                emptyState.classList.remove('hidden');
-            } else {
-                emptyState.classList.add('hidden');
-            }
-
-            // Ordenar por dia
-            filtered.sort((a, b) => a.day - b.day);
-
-            filtered.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50/80 transition duration-150';
-                
-                const remaining = Math.max(0, item.amount - item.paid);
-                
-                // Status Badge HTML
-                let statusHtml = '';
-                if (item.status === 'Pago' || remaining === 0) {
-                    statusHtml = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200"><i data-lucide="check" class="w-3 h-3"></i> Pago</span>`;
-                } else if (item.status === 'Parcial' || item.paid > 0) {
-                    statusHtml = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200"><i data-lucide="clock" class="w-3 h-3"></i> Parcial</span>`;
-                } else {
-                    statusHtml = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200"><i data-lucide="circle" class="w-3 h-3"></i> Pendente</span>`;
-                }
-
-                const catStyle = CATEGORY_COLORS[item.category] || 'bg-slate-100 text-slate-700';
-
-                tr.innerHTML = `
-                    <td class="py-3 px-4 text-center">${statusHtml}</td>
-                    <td class="py-3 px-3 font-semibold text-slate-700">Dia ${item.day}</td>
-                    <td class="py-3 px-4">
-                        <div class="font-bold text-slate-900 uppercase">${item.name}</div>
-                        ${item.notes ? `<span class="text-xs text-amber-600 flex items-center gap-1 mt-0.5"><i data-lucide="alert-circle" class="w-3 h-3"></i> ${item.notes}</span>` : ''}
-                    </td>
-                    <td class="py-3 px-4">
-                        <span class="px-2.5 py-0.5 rounded-md text-xs font-medium border ${catStyle}">${item.category}</span>
-                    </td>
-                    <td class="py-3 px-4 text-right font-medium text-slate-600">R$ ${item.amount.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                    <td class="py-3 px-4 text-right font-bold ${item.paid > 0 ? 'text-emerald-600' : 'text-slate-400'}">
-                        R$ ${item.paid.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
-                    </td>
-                    <td class="py-3 px-4 text-right font-bold ${remaining > 0 ? 'text-slate-800' : 'text-slate-300'}">
-                        R$ ${remaining.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
-                    </td>
-                    <td class="py-3 px-4 text-center">
-                        <div class="flex items-center justify-center gap-1">
-                            ${remaining > 0 ? `
-                                <button onclick="markAsPaid('${item.id}')" title="Quitar Integralmente" class="p-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-lg transition">
-                                    <i data-lucide="check-check" class="w-4 h-4"></i>
-                                </button>
-                                <button onclick="promptPartialPayment('${item.id}')" title="Dar Baixa Parcial" class="p-1.5 bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white rounded-lg transition">
-                                    <i data-lucide="coins" class="w-4 h-4"></i>
-                                </button>
-                            ` : `
-                                <button onclick="undoPayment('${item.id}')" title="Desfazer Quitação" class="p-1.5 bg-slate-100 text-slate-500 hover:bg-slate-200 rounded-lg transition">
-                                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                                </button>
-                            `}
-                            <button onclick="editExpense('${item.id}')" title="Editar" class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition">
-                                <i data-lucide="edit-2" class="w-4 h-4"></i>
-                            </button>
-                            <button onclick="deleteExpense('${item.id}')" title="Remover" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-            lucide.createIcons();
-            updateMetrics();
-        }
-
-        // --- 6. ATUALIZAÇÃO DE MÉTRICAS & SALDO ---
-        function updateMetrics() {
-            const weekExpenses = expenses.filter(item => item.week === currentWeek);
-            
-            const totalAmount = weekExpenses.reduce((acc, item) => acc + item.amount, 0);
-            const totalPaid = weekExpenses.reduce((acc, item) => acc + item.paid, 0);
-            const totalPending = Math.max(0, totalAmount - totalPaid);
-            
-            const progress = totalAmount > 0 ? Math.round((totalPaid / totalAmount) * 100) : 0;
-
-            document.getElementById('metric-total-expenses').innerText = `R$ ${totalAmount.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            document.getElementById('metric-expenses-count').innerText = `${weekExpenses.length} contas cadastradas nesta semana`;
-            document.getElementById('metric-total-paid').innerText = `R$ ${totalPaid.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            document.getElementById('metric-total-pending').innerText = `R$ ${totalPending.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            
-            document.getElementById('metric-progress-percent').innerText = `${progress}%`;
-            document.getElementById('metric-progress-bar').style.width = `${progress}%`;
-
-            // Saldo da Entrada
-            const revVal = parseFloat(document.getElementById('weekly-revenue-input').value) || 0;
-            revenues[currentWeek] = revVal > 0 ? revVal : '';
-            saveToStorage();
-
-            const balance = revVal - totalAmount;
-            const balEl = document.getElementById('metric-balance');
-            const balDesc = document.getElementById('metric-balance-desc');
-            const balIcon = document.getElementById('balance-icon-container');
-            const covTag = document.getElementById('metric-coverage-tag');
-
-            if (revVal === 0) {
-                balEl.innerText = `R$ 0,00`;
-                balEl.className = 'text-2xl font-bold text-slate-400';
-                balDesc.innerText = 'Insira a entrada da semana acima e distribua.';
-                balIcon.className = 'w-12 h-12 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center shrink-0';
-                covTag.innerText = 'Aguardando Entrada';
-                covTag.className = 'px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold';
-            } else if (balance >= 0) {
-                balEl.innerText = `+ R$ ${balance.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                balEl.className = 'text-2xl font-bold text-emerald-600';
-                balDesc.innerText = `Superávit! Entrada cobre todas as despesas da semana.`;
-                balIcon.className = 'w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0';
-                covTag.innerText = '100% Coberto + Sobra';
-                covTag.className = 'px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-semibold';
-            } else {
-                balEl.innerText = `- R$ ${Math.abs(balance).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-                balEl.className = 'text-2xl font-bold text-red-600';
-                balDesc.innerText = `Déficit! Faltarão R$ ${Math.abs(balance).toLocaleString('pt-BR', {minimumFractionDigits: 2})} para quitar tudo.`;
-                balIcon.className = 'w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0';
-                covTag.innerText = 'Cobertura Parcial';
-                covTag.className = 'px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-semibold';
-            }
-        }
-
-        // --- 7. ALGORITMO DE DISTRIBUIÇÃO EM CASCATA (WATERFALL) ---
-        function distributeRevenue() {
-            const revInput = document.getElementById('weekly-revenue-input').value;
-            let availableCash = parseFloat(revInput) || 0;
-
-            if (availableCash <= 0) {
-                alert('Por favor, insira o valor da Entrada da Semana primeiro.');
-                document.getElementById('weekly-revenue-input').focus();
-                return;
-            }
-
-            // Filtrar itens da semana
-            let weekItems = expenses.filter(item => item.week === currentWeek);
-
-            // Zera pagamentos da semana para recalcular a distribuição limpa
-            weekItems.forEach(item => {
-                item.paid = 0;
-                item.status = 'Pendente';
-            });
-
-            // Ordem de prioridade inteligente:
-            // 1. Consumo (Luz, Água, Net) e Impostos (MEI)
-            // 2. Operacional / Caminhão
-            // 3. Empréstimos
-            // 4. Pessoal (Pró-labore) e Cartões
-            const priorityMap = {
-                'Consumo': 1,
-                'Impostos': 1,
-                'Operacional': 2,
-                'Empréstimos': 3,
-                'Cartões': 4,
-                'Pessoal': 5
-            };
-
-            weekItems.sort((a, b) => {
-                const pA = priorityMap[a.category] || 99;
-                const pB = priorityMap[b.category] || 99;
-                if (pA !== pB) return pA - pB;
-                return a.day - b.day; // Se mesma prioridade, quem vence primeiro
-            });
-
-            // Algoritmo em cascata
-            weekItems.forEach(item => {
-                if (availableCash >= item.amount) {
-                    item.paid = item.amount;
-                    item.status = 'Pago';
-                    availableCash -= item.amount;
-                } else if (availableCash > 0) {
-                    item.paid = availableCash;
-                    item.status = 'Parcial';
-                    availableCash = 0;
-                } else {
-                    item.paid = 0;
-                    item.status = 'Pendente';
-                }
-            });
-
-            saveToStorage();
-            renderExpenses();
-            showToast('Caixa distribuído com sucesso pela ordem de prioridades!');
-        }
-
-        // --- 8. AÇÕES MANUAIS DE PAGAMENTO ---
-        function markAsPaid(id) {
-            const item = expenses.find(i => i.id === id);
-            if (item) {
-                item.paid = item.amount;
-                item.status = 'Pago';
-                saveToStorage();
-                renderExpenses();
-                showToast(`"${item.name}" marcado como quitado!`);
-            }
-        }
-
-        function promptPartialPayment(id) {
-            const item = expenses.find(i => i.id === id);
-            if (item) {
-                const remaining = item.amount - item.paid;
-                const val = prompt(`Valor original: R$ ${item.amount.toFixed(2)}\nJá pago: R$ ${item.paid.toFixed(2)}\n\nDigite o valor que deseja dar baixa agora:`, remaining.toFixed(2));
-                if (val !== null && !isNaN(parseFloat(val))) {
-                    const addPaid = parseFloat(val);
-                    item.paid = Math.min(item.amount, item.paid + addPaid);
-                    item.status = item.paid >= item.amount ? 'Pago' : 'Parcial';
-                    saveToStorage();
-                    renderExpenses();
-                    showToast('Baixa parcial registrada!');
-                }
-            }
-        }
-
-        function undoPayment(id) {
-            const item = expenses.find(i => i.id === id);
-            if (item) {
-                item.paid = 0;
-                item.status = 'Pendente';
-                saveToStorage();
-                renderExpenses();
-                showToast(`Pagamento desfeito para "${item.name}".`);
-            }
-        }
-
-        function deleteExpense(id) {
-            if (confirm('Tem certeza que deseja remover este vencimento?')) {
-                expenses = expenses.filter(i => i.id !== id);
-                saveToStorage();
-                renderExpenses();
-                showToast('Vencimento removido.');
-            }
-        }
-
-        // --- 9. MODAL GESTÃO DE DESPESAS ---
-        function openModal(id = null) {
-            document.getElementById('expense-modal').classList.remove('hidden');
-            if (id) {
-                const item = expenses.find(i => i.id === id);
-                document.getElementById('modal-title').innerHTML = `<i data-lucide="edit-2" class="w-5 h-5 text-emerald-600"></i> Editar Vencimento`;
-                document.getElementById('expense-id').value = item.id;
-                document.getElementById('form-week').value = item.week;
-                document.getElementById('form-name').value = item.name;
-                document.getElementById('form-day').value = item.day;
-                document.getElementById('form-amount').value = item.amount;
-                document.getElementById('form-category').value = item.category;
-                document.getElementById('form-notes').value = item.notes || '';
-            } else {
-                document.getElementById('modal-title').innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-emerald-600"></i> Cadastrar Novo Vencimento`;
-                document.getElementById('expense-form').reset();
-                document.getElementById('expense-id').value = '';
-                document.getElementById('form-week').value = currentWeek;
-            }
-            lucide.createIcons();
-        }
-
-        function closeModal() {
-            document.getElementById('expense-modal').classList.add('hidden');
-        }
-
-        function editExpense(id) {
-            openModal(id);
-        }
-
-        function saveExpense(e) {
-            e.preventDefault();
-            const id = document.getElementById('expense-id').value;
-            const week = parseInt(document.getElementById('form-week').value);
-            const name = document.getElementById('form-name').value.trim();
-            const day = parseInt(document.getElementById('form-day').value);
-            const amount = parseFloat(document.getElementById('form-amount').value);
-            const category = document.getElementById('form-category').value;
-            const notes = document.getElementById('form-notes').value.trim();
-
-            if (id) {
-                // Editar existente
-                const item = expenses.find(i => i.id === id);
-                if (item) {
-                    item.week = week;
-                    item.name = name;
-                    item.day = day;
-                    item.amount = amount;
-                    item.category = category;
-                    item.notes = notes;
-                    if (item.paid >= amount) item.status = 'Pago';
-                    else if (item.paid > 0) item.status = 'Parcial';
-                    else item.status = 'Pendente';
-                }
-            } else {
-                // Novo
-                const newItem = {
-                    id: 'exp_' + Date.now(),
-                    week: week,
-                    name: name,
-                    day: day,
-                    amount: amount,
-                    paid: 0,
-                    status: 'Pendente',
-                    category: category,
-                    notes: notes
-                };
-                expenses.push(newItem);
-            }
-
-            saveToStorage();
-            closeModal();
-            if (week !== currentWeek) {
-                selectWeek(week);
-            } else {
-                renderExpenses();
-            }
-            showToast('Vencimento salvo com sucesso!');
-        }
-
-        // --- 10. NOTIFICAÇÕES TOAST ---
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-message').innerText = message;
-            toast.classList.remove('hidden');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 3500);
-        }
-    </script>
+    <!-- Script modularizado -->
+    <script src="/static/app.js"></script>
 </body>
 </html>

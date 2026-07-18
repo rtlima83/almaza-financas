@@ -5,10 +5,10 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Chave secreta e Debug lidos das variáveis de ambiente
-SECRET_KEY = config('SECRET_KEY', default='chave-insegura-de-desenvolvimento')
-DEBUG = config('DEBUG', default=True, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=Csv())
+# 1. SEGURANÇA E AMBIENTE (Lidos das variáveis do sistema)
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-chave-apenas-para-dev-local-nunca-usar-na-nuvem')
+DEBUG = config('DEBUG', default=False, cast=bool) # Por segurança, o default agora é False!
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost,.onrender.com', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -16,15 +16,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic', # Adicionar WhiteNoise antes do staticfiles
+    'whitenoise.runserver_nostatic', # WhiteNoise antes do staticfiles
     'django.contrib.staticfiles',
-    
-    # Apps de terceiros
+
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-
-    # Nosso app
     'financas',
 ]
 
@@ -42,14 +39,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
-# Configuração de Banco de Dados Dinâmica (SQLite no local, Postgres na Nuvem)
+# 2. BANCO DE DADOS (SQLite no local, Postgres no Render)
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'))
+        default=config('DATABASE_URL', default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')),
+        conn_max_age=600 # Otimização de performance para manter conexão aberta no Postgres
     )
 }
 
-# Configuração do Django REST e JWT
+# 3. AUTENTICAÇÃO E JWT
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -59,7 +57,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-# Servindo o HTML como Template
+# 4. INTERFACE HTML (TEMPLATES)
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -76,11 +74,17 @@ TEMPLATES = [
     },
 ]
 
-# Arquivos Estáticos na Nuvem
+# 5. ARQUIVOS ESTÁTICOS (WhiteNoise)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# CORS (Para permitir chamadas seguras na API)
-CORS_ALLOW_ALL_ORIGINS = True # Em produção, substitua por CORS_ALLOWED_ORIGINS = ['https://seudominio.com']
+# 6. SEGURANÇA E CORS BLINDADOS
+# apenas requisições vindas dos domínios autorizados.
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True # Libera tudo apenas se estiver testando no local com DEBUG = True
+else:
+    CORS_ALLOW_ALL_ORIGINS = False
+    # Lista de domínios seguros na sua variável CORS_ALLOWED_ORIGINS
+    CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='https://almaza-financas.onrender.com', cast=Csv())
